@@ -119,7 +119,7 @@ class TestBinaryExactRowsExpectedColumns(unittest.TestCase):
         for ii in [0,1]:
             print('Binary table instance ' + str(ii) + 
             ' chisquare test p-value: ' + '{:.3f}'.format(
-                            tabletools.test_this_sampler( self.sam[ii], 100)))
+                            tabletools.test_this_sampler( self.sam[ii], 10000)))
         print('')
         
         return 0
