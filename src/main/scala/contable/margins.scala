@@ -2,11 +2,12 @@
 package contable
 
 import breeze.linalg._
+import breeze.numerics._
 
-class Margins(row_sums: Seq[Int], col_sums: Seq[Int]) {
+class Margins(row_sums: Vector[Int], col_sums: Vector[Int]) {
 
-  val r = new DenseVector(row_sums.toArray)
-  val c = new DenseVector(col_sums.toArray)
+  val r = row_sums.toDenseVector
+  val c = col_sums.toDenseVector
   val m = r.length
   val n = c.length
 
@@ -18,13 +19,12 @@ class Margins(row_sums: Seq[Int], col_sums: Seq[Int]) {
      && (sum(X,Axis._1) == c))
 }
 
-class MarginsWithCellBounds(row_sums: Seq[Int], 
-                            col_sums: Seq[Int],
-                            cell_bounds: Matrix[Int]) extends Margins(row_sums,col_sums) {
+class MarginsWithCellBounds(row_sums: DenseVector[Int], 
+                            col_sums: DenseVector[Int],
+                            bounds: Matrix[Int]) extends Margins(row_sums,col_sums) {
+  val B = bounds.toDenseMatrix
 
-  val B = cell_bounds.toDenseMatrix
-
-  override def isFeasible = super.isFeasible //check the flow problem instead
+  override def isFeasible: Boolean = super.isFeasible //check the flow problem instead
 
   override def check(X: DenseMatrix[Int]) = (super.isFeasible && all(X :<= B))
 
