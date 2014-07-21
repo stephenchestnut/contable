@@ -26,6 +26,6 @@ class MarginsWithCellBounds(row_sums: DenseVector[Int],
 
   override def isFeasible: Boolean = super.isFeasible //check the flow problem instead
 
-  override def check(X: DenseMatrix[Int]) = (super.isFeasible && all(X :<= B))
+  override def check(X: DenseMatrix[Int]) = (super.check(X) && all(X :<= B))
 
 }

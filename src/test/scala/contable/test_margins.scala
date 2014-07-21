@@ -23,3 +23,36 @@ class TestMargins extends FunSpec {
     }
   }
 }
+
+class TestMarginsWithCellBounds extends FunSpec {
+
+  //Infeasible
+  def m1 = new MarginsWithCellBounds(DenseVector[Int](),
+                                     DenseVector[Int](),
+                                     DenseMatrix.fill[Int](0,0)(1))
+  //Feasible
+  def m2 = new MarginsWithCellBounds(DenseVector(Range(1,6).toArray),
+                                     DenseVector(Range(1,6).toArray),
+                                     DenseMatrix.fill[Int](5,5)(1))
+  //Infeasible
+  def m3 = new MarginsWithCellBounds(DenseVector(2,1,3),DenseVector(2,2,1,1),
+                                     DenseMatrix((1,0,1,0),(0,0,1,4),(0,1,6,2)))
+  //Feasible
+  def m4 = new MarginsWithCellBounds(DenseVector(2,1,3),DenseVector(2,2,1,1),
+                                     DenseMatrix((1,1,1,2),(1,0,1,4),(3,1,6,1)))
+  //Feasible
+  def m5 = new MarginsWithCellBounds(DenseVector(3,3,2,2,2,1,1,1), DenseVector(5,4,3,3),
+                                     DenseMatrix.fill[Int](4,8)(1))
+
+  describe("A MarginsWithCellBounds") {
+    it("should correctly determine feasibility") {
+      assert(!m1.isFeasible)
+      assert(m2.isFeasible)
+      assert(m4.isFeasible)
+      assert(m5.isFeasible)
+    }
+    ignore ("should correctly determine feasibility when the flow problem is required") {
+      assert(!m3.isFeasible)
+    }
+  }
+}
